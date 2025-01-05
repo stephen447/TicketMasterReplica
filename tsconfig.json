@@ -1,13 +1,15 @@
 {
-    "compilerOptions": {
-      "jsx": "react-jsx", // Use "react-jsx" for React 17+ or "react" for older versions
-      "strict": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "module": "ESNext",
-      "target": "ESNext",
-      "moduleResolution": "Node",
-      "skipLibCheck": true
-    }
-  }
-  
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["react", "react-dom"]
+  },
+  "include": ["src"]
+}
