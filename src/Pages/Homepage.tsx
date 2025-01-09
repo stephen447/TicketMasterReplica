@@ -1,5 +1,6 @@
 import React, { JSX } from "react";
 import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 export default function Homepage(): JSX.Element {
   const regions: string[] = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
@@ -31,6 +32,7 @@ export default function Homepage(): JSX.Element {
       </div>
       {/* Popular Tickets */}
       {/* Footer */}
+      <Footer />
     </div>
   );
 }
