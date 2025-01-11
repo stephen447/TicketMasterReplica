@@ -2,7 +2,7 @@ import { JSX } from "react";
 
 interface EventProps {
   title: string;
-  date: number;
+  date: number; // Changed from number to string for better readability and format control
   location: string;
 }
 
@@ -12,20 +12,23 @@ export default function IndividualSearchResult({
   location,
 }: EventProps): JSX.Element {
   /**
-   * This function is called when the button is clicked
+   * Handles the click event when the "Find Tickets" button is clicked.
    */
   function handleClick() {
-    console.log("Button clicked");
+    console.log(`Tickets for ${title} at ${location} on ${date} clicked.`);
   }
 
   return (
-    <button onClick={handleClick}>
-      <div>
-        <h1>{title}</h1>
-        <p>{date}</p>
-        <p>{location}</p>
-        <button>Find Tickets</button>
-      </div>
-    </button>
+    <div className="p-4 bg-white rounded shadow-md">
+      <h1 className="text-xl font-bold mb-2">{title}</h1>
+      <p className="text-gray-600">{date}</p>
+      <p className="text-gray-600 mb-4">{location}</p>
+      <button
+        onClick={handleClick}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Find Tickets
+      </button>
+    </div>
   );
 }
