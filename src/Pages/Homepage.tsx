@@ -3,14 +3,20 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import FeaturedEventData from "../SampleData/Events.json";
 import Carousel from "../Components/Carousel";
+import { useNavigate } from "react-router-dom";
 
 export default function Homepage(): JSX.Element {
+  const navigate = useNavigate();
   const regions: string[] = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
   const FeaturedAdverts: { title: string; description: string }[] = [
     FeaturedEventData[0],
     FeaturedEventData[1],
     FeaturedEventData[2],
   ];
+
+  function handleSearch() {
+    navigate("/search-results");
+  }
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -72,7 +78,10 @@ export default function Homepage(): JSX.Element {
                 />
               </div>
               {/* Search Button */}
-              <button className="w-full md:w-auto px-6 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 mt-6 ">
+              <button
+                className="w-full md:w-auto px-6 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 mt-6"
+                onClick={handleSearch}
+              >
                 Search
               </button>
             </div>
