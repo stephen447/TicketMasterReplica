@@ -3,23 +3,14 @@ import { useState, useEffect } from "react";
 import Header from "../Components/Header";
 import IndividualSearchResult from "../Components/IndividualSearchResult";
 import Events from "../SampleData/Events.json";
+import { EventResult } from "../types";
 
 export default function SearchResultsPage(): JSX.Element {
   const [results, setResults] = useState<EventResult[]>([]); // State is an array of EventResult
   const [displayedResults, setDisplayedResults] = useState<EventResult[]>([]); // State is an array of EventResult
   const [hasMoreResults, setHasMoreResults] = useState<boolean>(true); // State is a boolean
   const [page, setPage] = useState<number>(1); // State is a number
-  const numberOfResultsPerPage = 2;
-  type EventResult = {
-    title: string;
-    description: string;
-    venueId: number;
-    time: string;
-    city: string;
-    region: string;
-    date: string;
-    id: number;
-  };
+  const numberOfResultsPerPage = 3;
 
   function fetchResults() {
     // Fetch the parameters in the url
@@ -28,7 +19,7 @@ export default function SearchResultsPage(): JSX.Element {
     const endDate = urlParams.get("endDate");
     const region = urlParams.get("region");
     const searchTerm = urlParams.get("searchTerm");
-    console.log("params", startDate, endDate, region, searchTerm);
+
     setResults(Events);
     setDisplayedResults(Events.slice(0, numberOfResultsPerPage)); // Initially show only the first result
     setHasMoreResults(Events.length > numberOfResultsPerPage); // Determine if more results are available
@@ -38,6 +29,9 @@ export default function SearchResultsPage(): JSX.Element {
     fetchResults();
   }, []);
 
+  /**
+   * Function for expanding the number of results displayed to the user
+   */
   function fetchMoreResults() {
     const newPageLimit = numberOfResultsPerPage * (page + 1);
     const updatedResults = results.slice(0, newPageLimit);
@@ -61,6 +55,7 @@ export default function SearchResultsPage(): JSX.Element {
           {results.length === 0 ? (
             <p className="text-center text-gray-600">No results found.</p>
           ) : (
+            // Display results
             <>
               <p>
                 Displaying {displayedResults.length} of {results.length} Results
@@ -72,7 +67,6 @@ export default function SearchResultsPage(): JSX.Element {
                   title={result.title}
                   date={result.date}
                   location={result.city}
-                  availability={result.city}
                   id={result.id}
                 />
               ))}

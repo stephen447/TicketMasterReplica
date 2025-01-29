@@ -5,7 +5,6 @@ interface IndividualSearchResultProps {
   title: string;
   date: string;
   location: string;
-  availability?: string;
   id: number;
 }
 
@@ -13,7 +12,6 @@ const IndividualSearchResult: React.FC<IndividualSearchResultProps> = ({
   title,
   date,
   location,
-  availability,
   id,
 }) => {
   const navigate = useNavigate();
@@ -29,7 +27,6 @@ const IndividualSearchResult: React.FC<IndividualSearchResultProps> = ({
         </h3>
         <p className="text-sm text-gray-600">{date}</p>
         <p className="text-sm text-gray-600">{location}</p>
-        <p>{availability}</p>
         <button
           onClick={() => handleRedirect(id)}
           className="mt-4 w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"

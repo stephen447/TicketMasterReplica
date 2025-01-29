@@ -30,3 +30,14 @@ export type Event = {
   id: number;
   tickets: groupTicket[];
 };
+
+export type EventResult = {
+  title: string;
+  description: string;
+  venueId: number;
+  time: string;
+  city: string;
+  region: string;
+  date: string;
+  id: number;
+};
