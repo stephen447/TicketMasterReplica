@@ -40,6 +40,7 @@ export default function ProfilePage(): JSX.Element {
   return (
     <div className="bg-gray-900 min-h-screen p-6 text-white">
       <Header />
+      {/* Header */}
       <div className="max-w-4xl mx-auto bg-gray-800 p-6 my-6 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-4">My Account</h1>
         <div className="flex border-b border-gray-700 mb-4">
@@ -68,56 +69,69 @@ export default function ProfilePage(): JSX.Element {
             Sign Out
           </button>
         </div>
-
+        {/* Tabs */}
+        {/* Tickets */}
         {activeTab === "tickets" && (
           <div>
             <h2 className="text-2xl font-semibold mb-3">Your Tickets</h2>
             <p className="text-gray-400">No tickets purchased yet.</p>
           </div>
         )}
-
+        {/* Profile */}
         {activeTab === "profile" && (
           <div>
             <h2 className="text-2xl font-semibold mb-3">Profile Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm mb-1">First Name</label>
+                <label className="block text-sm mb-1" htmlFor="firstName">
+                  First Name
+                </label>
                 <input
                   type="text"
                   name="firstName"
                   value={userData.firstName}
                   onChange={handleInputChange}
                   className="w-full p-2 rounded bg-gray-700 text-white"
+                  id="firstName"
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Last Name</label>
+                <label className="block text-sm mb-1" htmlFor="lastName">
+                  Last Name
+                </label>
                 <input
                   type="text"
                   name="lastName"
                   value={userData.lastName}
                   onChange={handleInputChange}
                   className="w-full p-2 rounded bg-gray-700 text-white"
+                  id="lastName"
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Email</label>
+                <label className="block text-sm mb-1" htmlFor="email">
+                  Email
+                </label>
                 <input
                   type="email"
                   name="email"
                   value={userData.email}
                   onChange={handleInputChange}
                   className="w-full p-2 rounded bg-gray-700 text-white"
+                  id="email"
                 />
               </div>
               <div>
-                <label className="block text-sm mb-1">Country</label>
+                <label className="block text-sm mb-1" htmlFor="country">
+                  Country
+                </label>
                 <input
                   type="text"
                   name="countryOfResidence"
                   value={userData.countryOfResidence}
                   onChange={handleInputChange}
                   className="w-full p-2 rounded bg-gray-700 text-white"
+                  id="country"
                 />
               </div>
             </div>
@@ -134,7 +148,7 @@ export default function ProfilePage(): JSX.Element {
             )}
           </div>
         )}
-
+        {/* Sign Out */}
         {activeTab === "signout" && (
           <div>
             <h2 className="text-2xl font-semibold mb-3">Sign Out</h2>
