@@ -13,3 +13,20 @@ export interface PersonalInfo {
   email: string;
   phone: string;
 }
+export type groupTicket = {
+  name: string;
+  price: number;
+  total: number;
+  availability: number;
+};
+export type Event = {
+  title: string;
+  description: string;
+  venueId: number;
+  time: string;
+  city: string;
+  region: string;
+  date: string;
+  id: number;
+  tickets: groupTicket[];
+};

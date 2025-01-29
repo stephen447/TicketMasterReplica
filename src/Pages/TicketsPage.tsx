@@ -1,26 +1,9 @@
 import React, { useState, useEffect, JSX } from "react";
 import { useParams } from "react-router-dom";
+import { groupTicket, Event, CartItem } from "../types";
+
 import Header from "../Components/Header";
 import EventData from "../SampleData/Events.json";
-import { CartItem } from "../types";
-
-type groupTicket = {
-  name: string;
-  price: number;
-  total: number;
-  availability: number;
-};
-type Event = {
-  title: string;
-  description: string;
-  venueId: number;
-  time: string;
-  city: string;
-  region: string;
-  date: string;
-  id: number;
-  tickets: groupTicket[];
-};
 
 interface TicketsPageProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
@@ -37,13 +20,19 @@ export default function TicketsPage({
   );
   const [quantity, setQuantity] = useState(1);
 
+  /**
+   * This update the cart object with the new item
+   * @param item CartItem - The item to be added to the cart
+   */
   const addToCart = (item: CartItem) => {
     setCart((prevCart: CartItem[]) => {
+      // Check if the item already exists in the cart
       const existingItem = prevCart.find(
         (cartItem: CartItem) =>
           cartItem.id === item.id && cartItem.name === item.name
       );
 
+      // If the item already exists, increase the quantity
       if (existingItem) {
         // If the item already exists (same event ID and ticket name), increase the quantity
         return prevCart.map((cartItem: CartItem) =>
@@ -69,8 +58,6 @@ export default function TicketsPage({
       const eventID: number = parseInt(id || "0");
       // Find the event based on the ID
       const event = EventData.find((event: Event) => event.id === eventID);
-      console.log("Event", event);
-
       setTicketOptions(event?.tickets || []);
       setEventDetails(event || null);
     }
@@ -104,12 +91,12 @@ export default function TicketsPage({
     <div className="min-h-screen bg-gray-100 py-8">
       <Header />
       <div className="container mx-auto px-6 py-8">
+        {/* Event Details */}
         <h1 className="text-3xl font-bold text-gray-900">
           {eventDetails.title}
         </h1>
-        <p className="text-gray-600">
-          {eventDetails.date} | {eventDetails.city}
-        </p>
+        <p className="text-gray-600">{eventDetails.date}</p>
+        <p className="text-gray-600">{eventDetails.city}</p>
         <p className="mt-4 text-gray-800">{eventDetails.description}</p>
 
         <div className="mt-8">
@@ -138,7 +125,7 @@ export default function TicketsPage({
             ))}
           </div>
         </div>
-
+        {/* When ticket selected, display pricing and quantity details */}
         {selectedTicket && (
           <div className="mt-8">
             <h2 className="text-xl font-semibold text-gray-900">
