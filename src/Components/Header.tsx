@@ -34,7 +34,7 @@ function Header() {
   }
 
   return (
-    <header className="bg-white shadow-md">
+    <header className=" bg-transparent shadow-md">
       <div className="container mx-auto px-4 flex justify-between items-center py-4">
         {/* Logo */}
         <a href="/" className="text-2xl font-bold text-blue-600">

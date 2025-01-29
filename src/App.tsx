@@ -8,6 +8,7 @@ import SearchResultsPage from "./Pages/SearchResultsPage";
 import TicketsPage from "./Pages/TicketsPage";
 import CheckOutPage from "./Pages/CheckOutPage";
 import { CartItem } from "./types";
+import AboutUsPage from "./Pages/AboutUsPage";
 
 export default function App() {
   const EXPIRATION_TIME = 60 * 1000; // 15 minutes in milliseconds
@@ -78,6 +79,7 @@ export default function App() {
             />
           }
         />
+        <Route path="/about" element={<AboutUsPage />} />
       </Routes>
     </BrowserRouter>
   );
