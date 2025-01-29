@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "name": "Croke Park",
+    "city": "Dublin",
+    "capacity": 80000,
+    "venueType": "Stadium",
+    "tickets": [
+      { "name": "General Admission", "price": 50, "total": 50000 },
+      { "name": "Premium", "price": 100, "total": 20000 },
+      { "name": "VIP", "price": 200, "total": 10000 }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "3Arena",
+    "city": "Dublin",
+    "capacity": 14000,
+    "venueType": "Arena",
+    "tickets": [
+      { "name": "Standing", "price": 40, "total": 7000 },
+      { "name": "Seating", "price": 70, "total": 6000 },
+      { "name": "VIP Box", "price": 150, "total": 1000 }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "The Olympia",
+    "city": "Dublin",
+    "capacity": 1600,
+    "venueType": "Theatre",
+    "tickets": [
+      { "name": "Stalls", "price": 30, "total": 800 },
+      { "name": "Circle", "price": 50, "total": 600 },
+      { "name": "Box Seats", "price": 100, "total": 200 }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "The Gaiety",
+    "city": "Dublin",
+    "capacity": 1000,
+    "venueType": "Theatre",
+    "tickets": [
+      { "name": "Stalls", "price": 25, "total": 500 },
+      { "name": "Balcony", "price": 40, "total": 500 }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "The Helix",
+    "city": "Dublin",
+    "capacity": 1000,
+    "venueType": "Theatre",
+    "tickets": [
+      { "name": "Standard", "price": 30, "total": 700 },
+      { "name": "Premium", "price": 50, "total": 300 }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "The Abbey",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Theatre",
+    "tickets": [
+      { "name": "General Admission", "price": 20, "total": 400 },
+      { "name": "Box Seats", "price": 60, "total": 100 }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "The Button Factory",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Club",
+    "tickets": [{ "name": "General Admission", "price": 15, "total": 500 }]
+  },
+  {
+    "id": 8,
+    "name": "The Grand Social",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Club",
+    "tickets": [{ "name": "General Admission", "price": 20, "total": 500 }]
+  },
+  {
+    "id": 9,
+    "name": "The Workmans Club",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Club",
+    "tickets": [{ "name": "General Admission", "price": 10, "total": 500 }]
+  },
+  {
+    "id": 10,
+    "name": "The Sugar Club",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Club",
+    "tickets": [{ "name": "General Admission", "price": 12, "total": 500 }]
+  },
+  {
+    "id": 11,
+    "name": "The Academy",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Club",
+    "tickets": [{ "name": "General Admission", "price": 18, "total": 500 }]
+  },
+  {
+    "id": 12,
+    "name": "The National Concert Hall",
+    "city": "Dublin",
+    "capacity": 1000,
+    "venueType": "Concert Hall",
+    "tickets": [
+      { "name": "Orchestra", "price": 60, "total": 600 },
+      { "name": "Balcony", "price": 40, "total": 400 }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "The RDS",
+    "city": "Dublin",
+    "capacity": 5000,
+    "venueType": "Stadium",
+    "tickets": [
+      { "name": "General Admission", "price": 35, "total": 3000 },
+      { "name": "VIP", "price": 150, "total": 2000 }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "The Aviva",
+    "city": "Dublin",
+    "capacity": 50000,
+    "venueType": "Stadium",
+    "tickets": [
+      { "name": "General Admission", "price": 60, "total": 30000 },
+      { "name": "Seating", "price": 80, "total": 15000 },
+      { "name": "Corporate Box", "price": 250, "total": 5000 }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "The Point",
+    "city": "Dublin",
+    "capacity": 14000,
+    "venueType": "Arena",
+    "tickets": [
+      { "name": "Standing", "price": 50, "total": 7000 },
+      { "name": "Seating", "price": 90, "total": 7000 }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "The Mansion House",
+    "city": "Dublin",
+    "capacity": 500,
+    "venueType": "Hall",
+    "tickets": [{ "name": "General Admission", "price": 25, "total": 500 }]
+  }
+]

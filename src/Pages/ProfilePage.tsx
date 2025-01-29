@@ -1,21 +1,22 @@
-import { JSX } from "react";
-import { useState, useEffect } from "react";
+import { JSX, useState, useEffect } from "react";
+import Header from "../Components/Header";
 
 export default function ProfilePage(): JSX.Element {
   const [activeTab, setActiveTab] = useState("tickets");
   const [userData, setUserData] = useState({
-    email: "sdavidbyrne@gmail.com",
-    password: "Mclass11//",
-    firstName: "David",
-    lastName: "Byrne",
-    countryOfResidence: "USA",
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    countryOfResidence: "",
   });
   const [unsavedChanges, setUnsavedChanges] = useState(false);
-  const [tempTab, setTempTab] = useState<string | null>(null);
+  const [showSavedMessage, setShowSavedMessage] = useState(false);
 
-  // Fetch user data
+  // Load user data from localStorage
   useEffect(() => {
-    console.log("Fetch user data");
+    const storedData = localStorage.getItem("userProfile");
+    if (storedData) setUserData(JSON.parse(storedData));
   }, []);
 
   // Handle input change
@@ -25,114 +26,121 @@ export default function ProfilePage(): JSX.Element {
       ...prev,
       [name]: value,
     }));
-    setUnsavedChanges(true); // Mark changes as unsaved
+    setUnsavedChanges(true);
   };
 
-  // Save changes and reset unsaved changes
+  // Save changes to localStorage
   const handleSaveChanges = () => {
-    console.log("Changes saved:", userData);
-    setUnsavedChanges(false); // Reset unsaved changes
-    if (tempTab) {
-      setActiveTab(tempTab);
-      setTempTab(null);
-    }
-  };
-
-  // Confirm tab change
-  const confirmTabChange = () => {
-    if (unsavedChanges) {
-      const proceed = window.confirm(
-        "You have unsaved changes. Do you want to leave without saving?"
-      );
-      if (proceed && tempTab) {
-        setActiveTab(tempTab);
-        setUnsavedChanges(false);
-        setTempTab(null);
-      }
-    } else if (tempTab) {
-      setActiveTab(tempTab);
-    }
-  };
-
-  // Tab click handler
-  const handleTabClick = (tab: string) => {
-    if (unsavedChanges) {
-      setTempTab(tab); // Store the clicked tab temporarily
-      confirmTabChange(); // Prompt the user
-    } else {
-      setActiveTab(tab); // Switch directly if no unsaved changes
-    }
+    localStorage.setItem("userProfile", JSON.stringify(userData));
+    setUnsavedChanges(false);
+    setShowSavedMessage(true);
+    setTimeout(() => setShowSavedMessage(false), 3000); // Hide after 3 seconds
   };
 
   return (
-    <div>
-      <p>Profile</p>
-      <div>
-        {/* Tickets dropdown */}
-        <button onClick={() => handleTabClick("tickets")}>Tickets</button>
-        {/* Profile */}
-        <button onClick={() => handleTabClick("profile")}>Profile</button>
-        {/* Sign out */}
-        <button onClick={() => handleTabClick("signout")}>Sign Out</button>
-      </div>
-      <div>
-        {activeTab === "tickets" ? (
+    <div className="bg-gray-900 min-h-screen p-6 text-white">
+      <Header />
+      <div className="max-w-4xl mx-auto bg-gray-800 p-6 my-6 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold mb-4">My Account</h1>
+        <div className="flex border-b border-gray-700 mb-4">
+          <button
+            className={`p-3 w-1/3 text-center ${
+              activeTab === "tickets" ? "border-b-4 border-blue-500" : ""
+            }`}
+            onClick={() => setActiveTab("tickets")}
+          >
+            My Tickets
+          </button>
+          <button
+            className={`p-3 w-1/3 text-center ${
+              activeTab === "profile" ? "border-b-4 border-blue-500" : ""
+            }`}
+            onClick={() => setActiveTab("profile")}
+          >
+            Profile
+          </button>
+          <button
+            className={`p-3 w-1/3 text-center ${
+              activeTab === "signout" ? "border-b-4 border-red-500" : ""
+            }`}
+            onClick={() => setActiveTab("signout")}
+          >
+            Sign Out
+          </button>
+        </div>
+
+        {activeTab === "tickets" && (
           <div>
-            <p>My Tickets</p>
-            <p>Title</p>
-            <p>Description</p>
-            <button>Find Tickets</button>
+            <h2 className="text-2xl font-semibold mb-3">Your Tickets</h2>
+            <p className="text-gray-400">No tickets purchased yet.</p>
           </div>
-        ) : activeTab === "profile" ? (
+        )}
+
+        {activeTab === "profile" && (
           <div>
-            <p>Profile</p>
-            <label htmlFor="email">Email:</label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={userData.password}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="firstName">First Name:</label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              value={userData.firstName}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="lastName">Last Name:</label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={userData.lastName}
-              onChange={handleInputChange}
-            />
-            <label htmlFor="countryOfResidence">Country of Residence:</label>
-            <input
-              type="text"
-              id="countryOfResidence"
-              name="countryOfResidence"
-              value={userData.countryOfResidence}
-              onChange={handleInputChange}
-            />
+            <h2 className="text-2xl font-semibold mb-3">Profile Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm mb-1">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={userData.firstName}
+                  onChange={handleInputChange}
+                  className="w-full p-2 rounded bg-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={userData.lastName}
+                  onChange={handleInputChange}
+                  className="w-full p-2 rounded bg-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={userData.email}
+                  onChange={handleInputChange}
+                  className="w-full p-2 rounded bg-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Country</label>
+                <input
+                  type="text"
+                  name="countryOfResidence"
+                  value={userData.countryOfResidence}
+                  onChange={handleInputChange}
+                  className="w-full p-2 rounded bg-gray-700 text-white"
+                />
+              </div>
+            </div>
             {unsavedChanges && (
-              <button onClick={handleSaveChanges}>Confirm Changes</button>
+              <button
+                onClick={handleSaveChanges}
+                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              >
+                Save Changes
+              </button>
+            )}
+            {showSavedMessage && (
+              <p className="text-green-400 mt-2">Changes saved successfully!</p>
             )}
           </div>
-        ) : (
+        )}
+
+        {activeTab === "signout" && (
           <div>
-            <p>Sign Out</p>
+            <h2 className="text-2xl font-semibold mb-3">Sign Out</h2>
+            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+              Sign Out
+            </button>
           </div>
         )}
       </div>

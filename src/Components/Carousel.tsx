@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CarouselProps {
-  items: { title: string; description: string }[];
+  items: { title: string; description: string; id: number }[];
   interval?: number;
 }
 
 const Carousel: React.FC<CarouselProps> = ({ items, interval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cycle = setInterval(() => {
@@ -19,6 +21,10 @@ const Carousel: React.FC<CarouselProps> = ({ items, interval = 3000 }) => {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  function handleNavigation(id: number) {
+    navigate(`/tickets/${id}`);
+  }
 
   return (
     <div className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-lg">
@@ -36,7 +42,12 @@ const Carousel: React.FC<CarouselProps> = ({ items, interval = 3000 }) => {
           >
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
             <p className="text-gray-600 mb-4">{item.description}</p>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            <button
+              onClick={() => {
+                handleNavigation(item.id);
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
               Find Tickets
             </button>
           </div>

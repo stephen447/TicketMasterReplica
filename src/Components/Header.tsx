@@ -66,6 +66,12 @@ function Header() {
             >
               Theater
             </a>
+            <a
+              href="/checkout"
+              className="hover:text-blue-600 transition-colors duration-200"
+            >
+              Cart
+            </a>
           </nav>
         ) : (
           <> </>

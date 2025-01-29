@@ -10,6 +10,7 @@ describe("IndividualSearchResult Component", () => {
         date={"20240315"} // Use the correct prop type for `date`
         location="New York"
         availability="Available"
+        id={1}
       />
     );
     expect(screen.getByText("Concert")).toBeInTheDocument();

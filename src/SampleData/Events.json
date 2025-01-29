@@ -1,22 +1,92 @@
 [
   {
     "title": "Taylor Swift",
-    "description": "The Eras Tour live in New York!"
+    "description": "The Eras Tour live in New York!",
+    "id": 1,
+    "venueId": 15,
+    "date": "2025-06-15",
+    "time": "19:30",
+    "city": "New York",
+    "region": "North America",
+    "tickets": [
+      { "name": "Standing", "price": 50, "total": 7000, "availability": 6700 },
+      { "name": "Seating", "price": 90, "total": 7000, "availability": 6800 }
+    ]
   },
   {
     "title": "Ed Sheeran",
-    "description": "Mathematics Tour - An intimate performance in London."
+    "description": "Mathematics Tour - An intimate performance in London.",
+    "id": 2,
+    "venueId": 16,
+    "date": "2025-07-20",
+    "time": "20:00",
+    "city": "London",
+    "region": "Europe",
+    "tickets": [
+      {
+        "name": "General Admission",
+        "price": 25,
+        "total": 500,
+        "availability": 470
+      }
+    ]
   },
   {
     "title": "Billie Eilish",
-    "description": "Happier Than Ever World Tour in Los Angeles."
+    "description": "Happier Than Ever World Tour in Los Angeles.",
+    "id": 3,
+    "venueId": 14,
+    "date": "2025-08-10",
+    "time": "18:30",
+    "city": "Los Angeles",
+    "region": "North America",
+    "tickets": [
+      {
+        "name": "General Admission",
+        "price": 60,
+        "total": 30000,
+        "availability": 25000
+      },
+      { "name": "Seating", "price": 80, "total": 15000, "availability": 14000 },
+      {
+        "name": "Corporate Box",
+        "price": 250,
+        "total": 5000,
+        "availability": 4800
+      }
+    ]
   },
   {
     "title": "Bruno Mars",
-    "description": "Live performance of Bruno Mars' greatest hits in Las Vegas."
+    "description": "Live performance of Bruno Mars' greatest hits in Las Vegas.",
+    "id": 4,
+    "venueId": 13,
+    "date": "2025-09-05",
+    "time": "21:00",
+    "city": "Las Vegas",
+    "region": "North America",
+    "tickets": [
+      {
+        "name": "General Admission",
+        "price": 35,
+        "total": 3000,
+        "availability": 2800
+      },
+      { "name": "VIP", "price": 150, "total": 2000, "availability": 1800 }
+    ]
   },
   {
     "title": "Beyoncé",
-    "description": "Renaissance Tour - A spectacular night in Paris."
+    "description": "Renaissance Tour - A spectacular night in Paris.",
+    "id": 5,
+    "venueId": 12,
+    "date": "2025-10-15",
+    "time": "20:30",
+    "city": "Paris",
+    "region": "Europe",
+    "tickets": [
+      { "name": "Orchestra", "price": 60, "total": 600, "availability": 550 },
+      { "name": "Balcony", "price": 40, "total": 400, "availability": 380 }
+    ]
   }
 ]
