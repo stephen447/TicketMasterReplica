@@ -11,6 +11,7 @@ import { CartItem } from "./types";
 import AboutUsPage from "./Pages/AboutUsPage";
 import SupportPage from "./Pages/SupportPage";
 import Terms from "./Pages/TermsPage";
+import PrivacyPage from "./Pages/PrivacyPage";
 
 export default function App() {
   const EXPIRATION_TIME = 60 * 1000; // 15 minutes in milliseconds
@@ -84,6 +85,7 @@ export default function App() {
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
       </Routes>
     </BrowserRouter>
   );

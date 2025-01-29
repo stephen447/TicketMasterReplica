@@ -66,14 +66,6 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="/careers"
-                  className="text-gray-400 hover:text-white transition"
-                >
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
                   href="/terms"
                   className="text-gray-400 hover:text-white transition"
                 >
@@ -129,10 +121,7 @@ const Footer: React.FC = () => {
             >
               Privacy
             </a>
-            <a
-              href="/cookies"
-              className="text-gray-400 hover:text-white text-sm"
-            >
+            <a href="/" className="text-gray-400 hover:text-white text-sm">
               Cookies
             </a>
           </div>
