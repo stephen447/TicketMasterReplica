@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 
 function Header() {
   const [displayNav, setDisplayNav] = useState(window.innerWidth > 768);
-
   useEffect(() => {
     window.addEventListener("resize", () => {
       setDisplayNav(window.innerWidth < 768);
     });
   }, []);
+
+  // Functionality for changing sign in button to user info
 
   // Function to check if user is signed in, else display link to sign in page
   function checkSignedIn() {
@@ -49,19 +50,19 @@ function Header() {
               Home
             </a>
             <a
-              href="/"
+              href="/search-results?category=concerts"
               className="hover:text-blue-600 transition-colors duration-200"
             >
               Concerts
             </a>
             <a
-              href="/"
+              href="/search-results?category=sports"
               className="hover:text-blue-600 transition-colors duration-200"
             >
               Sports
             </a>
             <a
-              href="/"
+              href="/search-results?category=theater"
               className="hover:text-blue-600 transition-colors duration-200"
             >
               Theater
