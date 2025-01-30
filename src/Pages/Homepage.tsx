@@ -8,10 +8,10 @@ import { useState } from "react";
 
 export default function Homepage(): JSX.Element {
   const regions: string[] = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [region, setRegion] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [region, setRegion] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const FeaturedAdverts: { title: string; description: string; id: number }[] =
@@ -96,7 +96,7 @@ export default function Homepage(): JSX.Element {
                 }}
                 className="md:w-auto px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 text-gray-700"
               >
-                <option value="" disabled selected className="text-gray-500">
+                <option value="" disabled className="text-gray-500">
                   Select Region
                 </option>
                 {regions.map((region) => (
@@ -170,7 +170,10 @@ export default function Homepage(): JSX.Element {
             <div className="grid  grid-cols-1 md:grid-cols-4 gap-6 w-">
               {/* Example Ticket Card */}
               {FeaturedAdverts.map((event, index) => (
-                <div className="bg-white rounded-lg shadow-md p-6 mx-auto">
+                <div
+                  key={event.id}
+                  className="bg-white rounded-lg shadow-md p-6 mx-auto"
+                >
                   <h3 className="text-lg font-semibold mb-2 text-black">
                     {event.title}
                   </h3>
