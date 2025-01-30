@@ -1,29 +1,23 @@
 import { JSX } from "react";
 import Header from "../Components/Header";
 import { useState } from "react";
+
 export default function LoginPage(): JSX.Element {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  /**
-   * Sends requestion to the backend to sign in
-   */
-  function handleSignIn() {
+
+  function handleSignIn(): void {
     console.log("Sign In");
   }
 
-  /**
-   * Sends requestion to the backend to send reset password link to the user
-   * @returns void
-   */
-  function handleForgotPassword() {
+  function handleForgotPassword(): void {
     console.log("Forgot Password");
   }
 
   return (
-    <div className="flex flex-col min-h-screen ">
+    <div className="flex flex-col min-h-screen">
       <Header />
       <div className="flex flex-col flex-grow justify-center items-center bg-gray-100">
-        {/* Login Card */}
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
           <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
             Sign In to Your Account
@@ -41,9 +35,12 @@ export default function LoginPage(): JSX.Element {
                 type="text"
                 id="username"
                 name="username"
+                value={username}
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your username"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setUsername(e.target.value)
+                }
               />
             </div>
 
@@ -59,9 +56,12 @@ export default function LoginPage(): JSX.Element {
                 type="password"
                 id="password"
                 name="password"
+                value={password}
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
               />
             </div>
 
@@ -88,10 +88,8 @@ export default function LoginPage(): JSX.Element {
             </div>
           </form>
 
-          {/* Separator */}
           <div className="my-6 border-t border-gray-300"></div>
 
-          {/* Footer */}
           <p className="text-sm text-gray-600 text-center">
             Don’t have an account?{" "}
             <a
@@ -103,9 +101,6 @@ export default function LoginPage(): JSX.Element {
           </p>
         </div>
       </div>
-
-      {/* Footer Component */}
-      {/* <Footer /> */}
     </div>
   );
 }
