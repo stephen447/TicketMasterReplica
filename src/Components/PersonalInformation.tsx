@@ -26,7 +26,9 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onNext }) => {
     <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">Personal Information</h2>
       <div className="mb-4">
-        <label className="block font-semibold">Full Name</label>
+        <label className="block font-semibold" htmlFor="name">
+          Full Name
+        </label>
         <input
           type="text"
           name="name"
@@ -34,10 +36,13 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onNext }) => {
           onChange={handleChange}
           required
           className="w-full border p-2"
+          id="name"
         />
       </div>
       <div className="mb-4">
-        <label className="block font-semibold">Email Address</label>
+        <label className="block font-semibold" htmlFor="email">
+          Email Address
+        </label>
         <input
           type="email"
           name="email"
@@ -45,10 +50,13 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onNext }) => {
           onChange={handleChange}
           required
           className="w-full border p-2"
+          id="email"
         />
       </div>
       <div className="mb-4">
-        <label className="block font-semibold">Phone Number</label>
+        <label className="block font-semibold" htmlFor="phone">
+          Phone Number
+        </label>
         <input
           type="tel"
           name="phone"
@@ -56,6 +64,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ onNext }) => {
           onChange={handleChange}
           required
           className="w-full border p-2"
+          id="phone"
         />
       </div>
       <button
