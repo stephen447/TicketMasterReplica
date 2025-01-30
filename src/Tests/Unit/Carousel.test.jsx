@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Carousel from "../../Components/Carousel";
+import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 
 const mockItems = [
   { title: "Slide 1", description: "Description 1" },
@@ -11,7 +12,11 @@ jest.useFakeTimers(); // Mock setInterval for testing
 
 describe("Carousel", () => {
   it("renders slides correctly", () => {
-    render(<Carousel items={mockItems} />);
+    render(
+      <BrowserRouter>
+        <Carousel items={mockItems} />
+      </BrowserRouter>
+    );
 
     // Check if the first slide is rendered with correct content
     expect(screen.getByText("Slide 1")).toBeInTheDocument();
@@ -19,7 +24,11 @@ describe("Carousel", () => {
   });
 
   it("should automatically cycle slides", async () => {
-    render(<Carousel items={mockItems} interval={1000} />);
+    render(
+      <BrowserRouter>
+        <Carousel items={mockItems} />
+      </BrowserRouter>
+    );
 
     // Initially, the first slide should be visible
     expect(screen.getByText("Slide 1")).toBeInTheDocument();
@@ -44,7 +53,11 @@ describe("Carousel", () => {
   });
 
   it("changes to the correct slide when a dot is clicked", () => {
-    render(<Carousel items={mockItems} />);
+    render(
+      <BrowserRouter>
+        <Carousel items={mockItems} />
+      </BrowserRouter>
+    );
 
     // Click on the second dot to navigate to the second slide
     const secondDot = screen.getAllByRole("button")[1];
@@ -62,7 +75,11 @@ describe("Carousel", () => {
   });
 
   it("renders with the default interval of 3000ms", () => {
-    render(<Carousel items={mockItems} />);
+    render(
+      <BrowserRouter>
+        <Carousel items={mockItems} />
+      </BrowserRouter>
+    );
 
     // Check if the first slide is initially displayed
     expect(screen.getByText("Slide 1")).toBeInTheDocument();
