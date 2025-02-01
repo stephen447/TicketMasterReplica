@@ -42,7 +42,7 @@ export default function ProfilePage(): JSX.Element {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen p-6 text-white">
+    <div className="bg-gray-900 min-h-screen text-white">
       {/* Header */}
       <Header />
 

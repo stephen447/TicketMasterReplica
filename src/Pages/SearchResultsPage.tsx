@@ -48,7 +48,7 @@ export default function SearchResultsPage(): JSX.Element {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen py-6">
+    <div className="bg-gray-100 min-h-screen ">
       <Header />
       <div className="container mx-auto px-6 py-8">
         <div className="mb-8">
