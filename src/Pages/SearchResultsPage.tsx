@@ -6,12 +6,16 @@ import Events from "../SampleData/Events.json";
 import { EventResult } from "../types";
 
 export default function SearchResultsPage(): JSX.Element {
+  // state variables
   const [results, setResults] = useState<EventResult[]>([]); // State is an array of EventResult
   const [displayedResults, setDisplayedResults] = useState<EventResult[]>([]); // State is an array of EventResult
   const [hasMoreResults, setHasMoreResults] = useState<boolean>(true); // State is a boolean
   const [page, setPage] = useState<number>(1); // State is a number
   const numberOfResultsPerPage = 3;
 
+  /**
+   * Function to fetch the search results
+   */
   function fetchResults() {
     // Fetch the parameters in the url
     const urlParams = new URLSearchParams(window.location.search);

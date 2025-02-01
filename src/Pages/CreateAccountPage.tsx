@@ -33,18 +33,20 @@ export default function CreateAccountPage(): JSX.Element {
     let validationErrors = { ...errors };
 
     // Simple form validation
+    // email
     if (!formData.email) {
       validationErrors.email = "Email is required.";
     } else {
       validationErrors.email = "";
     }
-
+    // password
     if (!formData.password) {
       validationErrors.password = "Password is required.";
     } else {
       validationErrors.password = "";
     }
 
+    // confirmPassword
     if (!formData.confirmPassword) {
       validationErrors.confirmPassword = "Confirm Password is required.";
     } else if (formData.password !== formData.confirmPassword) {
@@ -53,18 +55,21 @@ export default function CreateAccountPage(): JSX.Element {
       validationErrors.confirmPassword = "";
     }
 
+    // firstName
     if (!formData.firstName) {
       validationErrors.firstName = "First Name is required.";
     } else {
       validationErrors.firstName = "";
     }
 
+    // lastName
     if (!formData.lastName) {
       validationErrors.lastName = "Last Name is required.";
     } else {
       validationErrors.lastName = "";
     }
 
+    // countryOfResidence
     if (!formData.countryOfResidence) {
       validationErrors.countryOfResidence = "Country of Residence is required.";
     } else {
@@ -88,7 +93,6 @@ export default function CreateAccountPage(): JSX.Element {
     });
 
     // Proceed with form submission logic (e.g., send data to server)
-    console.log("Form submitted:", formData);
   }
 
   function handleSignIn() {
@@ -110,10 +114,14 @@ export default function CreateAccountPage(): JSX.Element {
       <Header />
       <div className="flex items-center justify-center flex-grow bg-gray-100">
         <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+          {/* Title */}
           <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
             Create Account
           </h1>
+
+          {/* Form */}
           <form className="space-y-4" onSubmit={handleSignUp}>
+            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -136,6 +144,7 @@ export default function CreateAccountPage(): JSX.Element {
               )}
             </div>
 
+            {/* Password */}
             <div>
               <label
                 htmlFor="password"
@@ -156,7 +165,7 @@ export default function CreateAccountPage(): JSX.Element {
                 <p className="text-sm text-red-500">{errors.password}</p>
               )}
             </div>
-
+            {/* confirm password */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -177,7 +186,7 @@ export default function CreateAccountPage(): JSX.Element {
                 <p className="text-sm text-red-500">{errors.confirmPassword}</p>
               )}
             </div>
-
+            {/* first name */}
             <div>
               <label
                 htmlFor="firstName"
@@ -198,7 +207,7 @@ export default function CreateAccountPage(): JSX.Element {
                 <p className="text-sm text-red-500">{errors.firstName}</p>
               )}
             </div>
-
+            {/* last name */}
             <div>
               <label
                 htmlFor="lastName"
@@ -219,7 +228,7 @@ export default function CreateAccountPage(): JSX.Element {
                 <p className="text-sm text-red-500">{errors.lastName}</p>
               )}
             </div>
-
+            {/* country of residence */}
             <div>
               <label
                 htmlFor="countryOfResidence"
@@ -242,7 +251,7 @@ export default function CreateAccountPage(): JSX.Element {
                 </p>
               )}
             </div>
-
+            {/* submit button */}
             <button
               type="submit"
               className="w-full bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700"
@@ -250,7 +259,7 @@ export default function CreateAccountPage(): JSX.Element {
               Sign Up
             </button>
           </form>
-
+          {/* Sign In if already have an account*/}
           <p className="mt-4 text-center text-sm text-gray-600">
             Already have an account?{" "}
             <button

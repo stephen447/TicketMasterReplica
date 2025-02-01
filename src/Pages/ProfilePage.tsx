@@ -2,7 +2,10 @@ import { JSX, useState, useEffect } from "react";
 import Header from "../Components/Header";
 
 export default function ProfilePage(): JSX.Element {
+  // State variables
+  // Keeping track of the active tab
   const [activeTab, setActiveTab] = useState("tickets");
+  // User data state
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -10,6 +13,7 @@ export default function ProfilePage(): JSX.Element {
     lastName: "",
     countryOfResidence: "",
   });
+  // State to keep track of unsaved changes
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   const [showSavedMessage, setShowSavedMessage] = useState(false);
 
@@ -39,9 +43,11 @@ export default function ProfilePage(): JSX.Element {
 
   return (
     <div className="bg-gray-900 min-h-screen p-6 text-white">
-      <Header />
       {/* Header */}
+      <Header />
+
       <div className="max-w-4xl mx-auto bg-gray-800 p-6 my-6 rounded-lg shadow-lg">
+        {/* Nav bar */}
         <h1 className="text-3xl font-bold mb-4">My Account</h1>
         <div className="flex border-b border-gray-700 mb-4">
           <button

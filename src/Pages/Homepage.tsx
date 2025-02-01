@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function Homepage(): JSX.Element {
+  const navigate = useNavigate();
+  // State variables for the search form
   const regions: string[] = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -14,6 +16,7 @@ export default function Homepage(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
+  // Featured Adverts data - will be fetched from server
   const FeaturedAdverts: { title: string; description: string; id: number }[] =
     [FeaturedEventData[0], FeaturedEventData[1], FeaturedEventData[2]];
 
@@ -27,27 +30,31 @@ export default function Homepage(): JSX.Element {
     // Fetch the popular tickets from the API
   }
 
+  // Function to handle search form submission
   function handleSearch(
     startDate: string,
     endDate: string,
     region: string,
     searchTerm: string
   ) {
-    // append search query to the url
+    // Append search query to the url
     navigate(
       `/search-results?startDate=${startDate}&endDate=${endDate}&region=${region}&searchTerm=${searchTerm}`
     );
   }
 
-  const navigate = useNavigate();
   const handleRedirect = (id: number) => {
     navigate(`/tickets/${id}`); // Replace with your target path
   };
 
+  /**
+   * Function to handle the change event for the start date input
+   * @param e React.ChangeEvent<HTMLInputElement>
+   */
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newStartDate = e.target.value;
     setStartDate(newStartDate);
-
+    // Check if the start date is before the end date
     if (endDate && newStartDate > endDate) {
       setError("Start date must be before end date");
     } else {
@@ -55,6 +62,10 @@ export default function Homepage(): JSX.Element {
     }
   };
 
+  /**
+   * Function for handling the change event for the end date input
+   * @param e React.ChangeEvent<HTMLInputElement>
+   */
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEndDate = e.target.value;
     setEndDate(newEndDate);

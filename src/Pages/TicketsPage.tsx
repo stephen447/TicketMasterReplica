@@ -1,10 +1,10 @@
 import React, { useState, useEffect, JSX } from "react";
 import { useParams } from "react-router-dom";
 import { groupTicket, Event, CartItem } from "../types";
-
 import Header from "../Components/Header";
 import EventData from "../SampleData/Events.json";
 
+// Props for the TicketsPage component
 interface TicketsPageProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
@@ -12,6 +12,7 @@ interface TicketsPageProps {
 export default function TicketsPage({
   setCart,
 }: TicketsPageProps): JSX.Element {
+  // State variables
   const { id } = useParams<{ id: string }>();
   const [ticketOptions, setTicketOptions] = useState<groupTicket[]>([]);
   const [eventDetails, setEventDetails] = useState<Event | null>(null);
@@ -84,7 +85,6 @@ export default function TicketsPage({
 
   // Calculate total price
   const totalPrice = selectedTicket ? selectedTicket.price * quantity : 0;
-
   if (!eventDetails) return <div>Loading event details...</div>;
 
   return (
@@ -92,17 +92,21 @@ export default function TicketsPage({
       <Header />
       <div className="container mx-auto px-6 py-8">
         {/* Event Details */}
+        {/* Title */}
         <h1 className="text-3xl font-bold text-gray-900">
           {eventDetails.title}
         </h1>
+        {/* Details */}
         <p className="text-gray-600">{eventDetails.date}</p>
         <p className="text-gray-600">{eventDetails.city}</p>
         <p className="mt-4 text-gray-800">{eventDetails.description}</p>
 
+        {/* Ticket selection */}
         <div className="mt-8">
           <h2 className="text-xl font-semibold text-gray-900">
             Select Your Tickets
           </h2>
+          {/* Tickets which can be selected for the event */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             {ticketOptions.map((ticket, index) => (
               <button

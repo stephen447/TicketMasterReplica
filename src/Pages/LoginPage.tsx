@@ -6,10 +6,16 @@ export default function LoginPage(): JSX.Element {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  /**
+   * Function to handle the sign in process
+   */
   function handleSignIn(): void {
     console.log("Sign In");
   }
 
+  /**
+   * Function to handle the forgot password process
+   */
   function handleForgotPassword(): void {
     console.log("Forgot Password");
   }
@@ -19,9 +25,11 @@ export default function LoginPage(): JSX.Element {
       <Header />
       <div className="flex flex-col flex-grow justify-center items-center bg-gray-100">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+          {/* Title */}
           <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
             Sign In to Your Account
           </h1>
+          {/* Form */}
           <form className="space-y-4">
             {/* Username Field */}
             <div>
