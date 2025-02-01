@@ -15,6 +15,11 @@ import PrivacyPage from "./Pages/PrivacyPage";
 import { Provider } from "mobx-react";
 import { cartStore } from "./Store/CartStore";
 import { userStore } from "./Store/UserStore";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(
+  "pk_test_51QHVpbFGsC2hbdSGjBy7vbvItr7e0Yl6V8GGDpu6j09aWcxIvork7KApbpMIZyYOE6PLYShBKYXAuXNDLrhgnvSm00lp1lWQHb"
+); // Use your test key
 
 export default function App() {
   const EXPIRATION_TIME = 60 * 1000; // 15 minutes in milliseconds
@@ -90,11 +95,13 @@ export default function App() {
           <Route
             path="/checkout"
             element={
-              <CheckOutPage
-                cart={cart}
-                removeFromCart={removeFromCart}
-                updateQuantity={updateQuantity}
-              />
+              <Elements stripe={stripePromise}>
+                <CheckOutPage
+                  cart={cart}
+                  removeFromCart={removeFromCart}
+                  updateQuantity={updateQuantity}
+                />
+              </Elements>
             }
           />
           <Route path="/about" element={<AboutUsPage />} />

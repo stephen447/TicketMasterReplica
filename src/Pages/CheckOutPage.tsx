@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CartSummary from "../Components/CartSummary";
 import PersonalInfoForm from "../Components/PersonalInformation";
-//import PaymentForm from "../Components/PaymentForm"; // Uncommented import
+import PaymentForm from "../Components/PaymentForm"; // Uncommented import
 import { CartItem, PersonalInfo } from "../types";
 import Header from "../Components/Header";
 
@@ -31,6 +31,7 @@ const Checkout: React.FC<CheckoutProps> = ({
       setPersonalInfo(data);
     }
     setStep((prev) => prev + 1);
+    console.log("Step: ", step);
   };
 
   // Handle successful payment
@@ -51,13 +52,13 @@ const Checkout: React.FC<CheckoutProps> = ({
         />
       )}
       {step === 2 && <PersonalInfoForm onNext={handleNext} />}
-      {/* {step === 3 && (
+      {step === 3 && (
         <PaymentForm
           totalAmount={totalAmount}
           onPaymentSuccess={handlePaymentSuccess}
         />
-      )} */}
-      {step === 3 && (
+      )}
+      {step === 4 && (
         <div className="max-w-3xl mx-auto p-6">
           <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
           <p>Your order has been confirmed. Enjoy the event!</p>
