@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "type": "General Admission",
+    "eventId": 1,
+    "price": 20,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 2,
+    "type": "General Admission",
+    "eventId": 1,
+    "price": 20,
+    "status": "Sold",
+    "userId": 101
+  },
+  {
+    "id": 3,
+    "type": "VIP",
+    "eventId": 1,
+    "price": 150,
+    "status": "Sold",
+    "userId": 102
+  },
+  {
+    "id": 4,
+    "type": "Balcony",
+    "eventId": 1,
+    "price": 50,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 5,
+    "type": "General Admission",
+    "eventId": 2,
+    "price": 25,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 6,
+    "type": "Front Row",
+    "eventId": 2,
+    "price": 200,
+    "status": "Sold",
+    "userId": 103
+  },
+  {
+    "id": 7,
+    "type": "General Admission",
+    "eventId": 3,
+    "price": 30,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 8,
+    "type": "Premium",
+    "eventId": 3,
+    "price": 100,
+    "status": "Sold",
+    "userId": 104
+  },
+  {
+    "id": 9,
+    "type": "Box Seats",
+    "eventId": 3,
+    "price": 300,
+    "status": "Sold",
+    "userId": 105
+  },
+  {
+    "id": 10,
+    "type": "General Admission",
+    "eventId": 4,
+    "price": 30,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 11,
+    "type": "VIP",
+    "eventId": 4,
+    "price": 250,
+    "status": "Sold",
+    "userId": 106
+  },
+  {
+    "id": 12,
+    "type": "General Admission",
+    "eventId": 5,
+    "price": 35,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 13,
+    "type": "Golden Circle",
+    "eventId": 5,
+    "price": 300,
+    "status": "Sold",
+    "userId": 107
+  },
+  {
+    "id": 14,
+    "type": "Standard Seating",
+    "eventId": 5,
+    "price": 50,
+    "status": "Available",
+    "userId": null
+  },
+  {
+    "id": 15,
+    "type": "Balcony",
+    "eventId": 5,
+    "price": 75,
+    "status": "Available",
+    "userId": null
+  }
+]
