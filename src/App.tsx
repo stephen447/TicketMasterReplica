@@ -12,6 +12,9 @@ import AboutUsPage from "./Pages/AboutUsPage";
 import SupportPage from "./Pages/SupportPage";
 import Terms from "./Pages/TermsPage";
 import PrivacyPage from "./Pages/PrivacyPage";
+import { Provider } from "mobx-react";
+import { cartStore } from "./Store/CartStore";
+import { userStore } from "./Store/UserStore";
 
 export default function App() {
   const EXPIRATION_TIME = 60 * 1000; // 15 minutes in milliseconds
@@ -60,33 +63,46 @@ export default function App() {
     );
   };
 
+  useEffect(() => {
+    // Fetch user data and store in the mobx store including their tickets
+    userStore.setUserData({
+      firstName: "John",
+      lastName: "Doe",
+      email: "test@gmail.com",
+      phone: "86064",
+    });
+    //userStore.clearUserData();
+  }, []);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/create-account" element={<CreateAccountPage />} />
-        <Route path="/search-results" element={<SearchResultsPage />} />
-        <Route
-          path="/tickets/:id"
-          element={<TicketsPage setCart={setCart} />}
-        />
-        <Route
-          path="/checkout"
-          element={
-            <CheckOutPage
-              cart={cart}
-              removeFromCart={removeFromCart}
-              updateQuantity={updateQuantity}
-            />
-          }
-        />
-        <Route path="/about" element={<AboutUsPage />} />
-        <Route path="/support" element={<SupportPage />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider cartStore={cartStore} userStore={userStore}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/create-account" element={<CreateAccountPage />} />
+          <Route path="/search-results" element={<SearchResultsPage />} />
+          <Route
+            path="/tickets/:id"
+            element={<TicketsPage setCart={setCart} />}
+          />
+          <Route
+            path="/checkout"
+            element={
+              <CheckOutPage
+                cart={cart}
+                removeFromCart={removeFromCart}
+                updateQuantity={updateQuantity}
+              />
+            }
+          />
+          <Route path="/about" element={<AboutUsPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
