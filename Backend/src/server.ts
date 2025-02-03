@@ -1,13 +1,15 @@
 import express from "express";
+import dotenv from "dotenv";
 import userRoutes from "./routes/user";
-import dotenv from "dotenv"; // ES6 import
-dotenv.config(); // Load the .env file
-import sequelize from "./db.js";
+import { Event } from "./models/event";
+import sequelize from "./db";
+
+dotenv.config(); // Load .env variables
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware to parse JSON bodies
+// Middleware
 app.use(express.json());
 
 // Sample route
@@ -15,14 +17,12 @@ app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
-// Start the server
+// Sync database and start the server
 app.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
   try {
-    await sequelize.sync({ force: true }).then(() => {
-      console.log("Database & tables created!");
-    });
-    console.log("✅ Database synchronized.");
+    await sequelize.sync({ force: true }); // Force will drop and recreate tables
+    console.log("✅ Database & tables created!");
   } catch (error) {
     console.error("❌ Database synchronization failed:", error);
   }

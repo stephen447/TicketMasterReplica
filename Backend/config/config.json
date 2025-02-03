@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "ticket_master_rep_user",
+    "password": "EeCsIEL6wGqvD1gOQB9dMBCKOfAct7Y8",
+    "database": "ticket_master_rep",
+    "host": "dpg-cuf8vgdds78s73fjoc4g-a.frankfurt-postgres.render.com",
+    "dialect": "postgres",
+    "port": 5432,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}

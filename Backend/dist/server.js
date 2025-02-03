@@ -15,10 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv")); // ES6 import
 dotenv_1.default.config(); // Load the .env file
-const db_js_1 = __importDefault(require("./db.js"));
-console.log("DB_HOST", process.env.DB_HOST);
+const db_1 = __importDefault(require("./db"));
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 // Middleware to parse JSON bodies
 app.use(express_1.default.json());
 // Sample route
@@ -29,7 +28,7 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Server is running on port ${PORT}`);
     try {
-        yield db_js_1.default.sync({ force: true }).then(() => {
+        yield db_1.default.sync({ force: true }).then(() => {
             console.log("Database & tables created!");
         });
         console.log("✅ Database synchronized.");

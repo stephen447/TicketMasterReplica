@@ -1,5 +1,5 @@
-import { Sequelize, DataTypes } from "sequelize";
-import sequelize from "../db.js";
+import { DataTypes } from "sequelize";
+import sequelize from "../db"; // Import Sequelize instance
 
 const Event = sequelize.define("Event", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -12,6 +12,5 @@ const Event = sequelize.define("Event", {
   date: { type: DataTypes.STRING, allowNull: false },
   tickets: { type: DataTypes.JSONB, allowNull: false },
 });
-console.log("Event model created.");
-export default sequelize;
+
 export { Event };

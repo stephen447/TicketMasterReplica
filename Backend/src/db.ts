@@ -1,12 +1,16 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
+dotenv.config(); // Load .env variables
+
+// Validate required environment variables
 if (
   !process.env.DB_HOST ||
   !process.env.DB_NAME ||
   !process.env.DB_USERNAME ||
   !process.env.DB_PASSWORD
 ) {
-  console.error("Please set environment variables correctly.");
+  console.error("❌ Missing required environment variables. Check .env file.");
   process.exit(1);
 }
 
@@ -23,8 +27,8 @@ const sequelize = new Sequelize(
         rejectUnauthorized: false,
       },
     },
-    logging: false,
+    logging: console.log, // Log all SQL queries
   }
 );
 
-export default sequelize; // Ensure you are exporting correctly
+export default sequelize;
