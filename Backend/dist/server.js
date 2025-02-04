@@ -13,25 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv")); // ES6 import
-dotenv_1.default.config(); // Load the .env file
+const dotenv_1 = __importDefault(require("dotenv"));
+const event_1 = __importDefault(require("./routes/event"));
 const db_1 = __importDefault(require("./db"));
+dotenv_1.default.config(); // Load .env variables
 const app = (0, express_1.default)();
-const PORT = 3000;
-// Middleware to parse JSON bodies
+const PORT = process.env.PORT || 3000;
+// Middleware
 app.use(express_1.default.json());
-// Sample route
-app.get("/", (req, res) => {
-    res.send("Hello, World!");
-});
-// Start the server
+// Routes
+app.use("/events", event_1.default);
+// Sync database and start the server
 app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
     try {
-        yield db_1.default.sync({ force: true }).then(() => {
-            console.log("Database & tables created!");
-        });
-        console.log("✅ Database synchronized.");
+        yield db_1.default.sync({ force: true }); // Force will drop and recreate tables
+        console.log("✅ Database & tables created!");
     }
     catch (error) {
         console.error("❌ Database synchronization failed:", error);

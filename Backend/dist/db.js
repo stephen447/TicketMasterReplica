@@ -1,11 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config(); // Load .env variables
+// Validate required environment variables
 if (!process.env.DB_HOST ||
     !process.env.DB_NAME ||
     !process.env.DB_USERNAME ||
     !process.env.DB_PASSWORD) {
-    console.error("Please set environment variables correctly.");
+    console.error("❌ Missing required environment variables. Check .env file.");
     process.exit(1);
 }
 const sequelize = new sequelize_1.Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
@@ -17,6 +23,6 @@ const sequelize = new sequelize_1.Sequelize(process.env.DB_NAME, process.env.DB_
             rejectUnauthorized: false,
         },
     },
-    logging: false,
+    logging: console.log, // Log all SQL queries
 });
-exports.default = sequelize; // Ensure you are exporting correctly
+exports.default = sequelize;

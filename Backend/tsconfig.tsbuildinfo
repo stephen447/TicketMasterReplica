@@ -1,0 +1,1 @@
+{"root":["./src/db.ts","./src/server.ts","./src/models/event.ts","./src/routes/event.ts","./src/routes/ticket.ts","./src/routes/user.ts"],"errors":true,"version":"5.7.3"}
