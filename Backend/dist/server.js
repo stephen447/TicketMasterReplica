@@ -12,25 +12,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.stopServer = exports.startServer = exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const event_1 = __importDefault(require("./routes/event"));
 const db_1 = __importDefault(require("./db"));
+const swagger_1 = require("./swagger");
 dotenv_1.default.config(); // Load .env variables
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 3000;
+exports.app = app;
+const PORT = 3000;
 // Middleware
 app.use(express_1.default.json());
 // Routes
 app.use("/events", event_1.default);
-// Sync database and start the server
-app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`🚀 Server running on port ${PORT}`);
+app.use("/api-docs", swagger_1.swaggerUi.serve, swagger_1.swaggerUi.setup(swagger_1.swaggerSpec));
+let server = null; // Store server instance for graceful shutdown
+const startServer = (port) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield db_1.default.sync({ force: true }); // Force will drop and recreate tables
+        yield db_1.default.sync({ force: true }); // Sync database once
         console.log("✅ Database & tables created!");
+        server = app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
+        });
+        return server;
     }
     catch (error) {
-        console.error("❌ Database synchronization failed:", error);
+        console.error("Database synchronization failed:", error);
+        process.exit(1);
     }
-}));
+});
+exports.startServer = startServer;
+const stopServer = () => __awaiter(void 0, void 0, void 0, function* () {
+    if (server) {
+        server.close(() => {
+            console.log("Server stopped");
+        });
+    }
+});
+exports.stopServer = stopServer;
+// Start server only when running directly
+if (require.main === module) {
+    startServer(PORT);
+}

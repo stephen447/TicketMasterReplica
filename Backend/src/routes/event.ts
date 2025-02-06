@@ -3,18 +3,65 @@ import express, { Request, Response } from "express";
 
 const router = express.Router();
 
-// Get event details for a specific event by ID
-router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
-  try {
-    const event = await Event.findByPk(req.params.id);
-    res.status(event ? 200 : 404).json(event || { message: "Event not found" });
-  } catch (error) {
-    console.error("Error fetching event:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+/**
+ * @swagger
+ * tags:
+ *   name: Events
+ *   description: API for managing events
+ */
 
-// ✅ Create a new event
+/**
+ * @swagger
+ * /events/{id}:
+ *   get:
+ *     summary: Get event details by ID
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The event ID
+ *     responses:
+ *       200:
+ *         description: Event details retrieved successfully
+ *       404:
+ *         description: Event not found
+ */
+router.get(
+  "/event/:id",
+  async (req: Request<{ id: string }>, res: Response) => {
+    try {
+      console.log("Get");
+      const event = await Event.findByPk(req.params.id);
+      res
+        .status(event ? 200 : 404)
+        .json(event || { message: "Event not found" });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /events:
+ *   post:
+ *     summary: Create a new event
+ *     tags: [Events]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Event'
+ *     responses:
+ *       201:
+ *         description: Event created successfully
+ *       400:
+ *         description: Failed to create event
+ */
 router.post("/", async (req, res) => {
   try {
     const newEvent = await Event.create(req.body);
@@ -26,12 +73,35 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update an existing event
+/**
+ * @swagger
+ * /events/{id}:
+ *   put:
+ *     summary: Update an existing event
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Event'
+ *     responses:
+ *       200:
+ *         description: Event updated successfully
+ *       404:
+ *         description: Event not found
+ */
 router.put("/:id", async (req, res) => {
   try {
     const updatedEvent = await Event.update(req.body, {
       where: { id: req.params.id },
-      returning: true, // Returns updated record
+      returning: true,
     });
 
     res
@@ -42,11 +112,27 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete an event
+/**
+ * @swagger
+ * /events/{id}:
+ *   delete:
+ *     summary: Delete an event
+ *     tags: [Events]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Event deleted successfully
+ *       404:
+ *         description: Event not found
+ */
 router.delete("/:id", async (req, res) => {
   try {
     const deleted = await Event.destroy({ where: { id: req.params.id } });
-
     res
       .status(deleted ? 200 : 404)
       .json(
@@ -69,11 +155,11 @@ router.get("/popular", async (req, res) => {});
 router.get("/search", async (req, res) => {
   try {
     const { query } = req.query;
-
-    const events = query
+    let events = [];
+    events = query
       ? await Event.findAll({
           where: {
-            title: { $iLike: `%${query}%` }, // Case-insensitive search in PostgreSQL
+            title: { $iLike: `%${query}%` },
           },
         })
       : [];

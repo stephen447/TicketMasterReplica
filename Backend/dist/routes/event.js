@@ -18,84 +18,73 @@ const router = express_1.default.Router();
 // Get event details for a specific event by ID
 router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const event = { id: req.params.id, title: "Sample Event" };
-        if (!event) {
-            return res.status(404).json({ message: "Event not found" });
-        }
-        return res.json(event);
+        const event = yield event_1.Event.findByPk(req.params.id);
+        res.status(event ? 200 : 404).json(event || { message: "Event not found" });
     }
     catch (error) {
         console.error("Error fetching event:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ error: "Internal Server Error" });
     }
 }));
 // ✅ Create a new event
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newEvent = yield event_1.Event.create(req.body);
-        res.status(201).json(newEvent);
+        res
+            .status(newEvent ? 201 : 400)
+            .json(newEvent || { error: "Failed to create event" });
     }
     catch (error) {
         res.status(400).json({ error: "Failed to create event" });
     }
 }));
-// ✅ Update an existing event
+// Update an existing event
 router.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const updatedEvent = yield event_1.Event.update(req.body, {
             where: { id: req.params.id },
             returning: true, // Returns updated record
         });
-        if (updatedEvent[0] === 0) {
-            return res.status(404).json({ message: "Event not found" });
-        }
-        res.json(updatedEvent[1][0]); // Return the updated event
+        res
+            .status(updatedEvent[0] > 0 ? 200 : 404)
+            .json(updatedEvent[1][0] || { message: "Event not found" });
     }
     catch (error) {
         res.status(400).json({ error: "Failed to update event" });
     }
 }));
-// ✅ Delete an event
+// Delete an event
 router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const deleted = yield event_1.Event.destroy({ where: { id: req.params.id } });
-        if (!deleted) {
-            return res.status(404).json({ message: "Event not found" });
-        }
-        res.json({ message: "Event deleted successfully" });
+        res
+            .status(deleted ? 200 : 404)
+            .json(deleted
+            ? { message: "Event deleted successfully" }
+            : { message: "Event not found" });
     }
     catch (error) {
         res.status(500).json({ error: "Failed to delete event" });
     }
 }));
-// ✅ Get featured events (Example: return events with a 'featured' flag)
+// Get featured events (Example: return events with a 'featured' flag)
 router.get("/featured", (req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
-// ✅ Get popular events (Example: events with the most tickets sold)
-router.get("/popular", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const popularEvents = yield event_1.Event.findAll({
-            order: [["ticketsSold", "DESC"]],
-            limit: 10,
-        });
-        res.json(popularEvents);
-    }
-    catch (error) {
-        res.status(500).json({ error: "Failed to fetch popular events" });
-    }
-}));
-// ✅ Search for events (Example: search by title or city)
+// Get popular events (Example: events with the most tickets sold)
+router.get("/popular", (req, res) => __awaiter(void 0, void 0, void 0, function* () { }));
+// Search for events (Example: search by title or city)
 router.get("/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { query } = req.query;
-        if (!query) {
-            return res.status(400).json({ message: "Query parameter is required" });
-        }
-        const events = yield event_1.Event.findAll({
-            where: {
-                title: { $iLike: `%${query}%` }, // Case-insensitive search in PostgreSQL
-            },
-        });
-        res.json(events);
+        const events = query
+            ? yield event_1.Event.findAll({
+                where: {
+                    title: { $iLike: `%${query}%` }, // Case-insensitive search in PostgreSQL
+                },
+            })
+            : [];
+        res
+            .status(query ? 200 : 400)
+            .json(events.length > 0 ? events : { message: "Query parameter is required" });
     }
     catch (error) {
         res.status(500).json({ error: "Search failed" });
