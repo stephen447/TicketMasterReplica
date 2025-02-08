@@ -1,6 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import eventRoutes from "./routes/event";
+import ticketRoutes from "./routes/ticket";
+import venueRoutes from "./routes/venue";
+import userRoutes from "./routes/user";
 import sequelize from "./db";
 import { Server } from "http";
 import { swaggerUi, swaggerSpec } from "./swagger";
@@ -15,6 +18,9 @@ app.use(express.json());
 
 // Routes
 app.use("/events", eventRoutes);
+app.use("/tickets", ticketRoutes);
+app.use("/venues", venueRoutes);
+app.use("/users", userRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -23,7 +29,7 @@ let server: Server | null = null; // Store server instance for graceful shutdown
 const startServer = async (port: number): Promise<Server> => {
   try {
     await sequelize.sync({ force: true }); // Sync database once
-    console.log("✅ Database & tables created!");
+    console.log("Database & tables created!");
 
     server = app.listen(port, () => {
       console.log(`Server running on port ${port}`);
