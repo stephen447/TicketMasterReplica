@@ -7,6 +7,8 @@ import userRoutes from "./routes/user";
 import sequelize from "./db";
 import { Server } from "http";
 import { swaggerUi, swaggerSpec } from "./swagger";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config(); // Load .env variables
 
@@ -14,7 +16,21 @@ const app = express();
 const PORT = 3000;
 
 // Middleware
-app.use(express.json());
+app.use(express.json()); // This enables JSON body parsing
+app.use(express.urlencoded({ extended: true })); // Enable form data parsing
+app.use(cookieParser());
+
+// CORS
+const allowedOrigins = ["http://localhost:3001"]; // Replace with your actual frontend URL
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true, // Allow cookies (for JWT HttpOnly)
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  })
+);
 
 // Routes
 app.use("/events", eventRoutes);
