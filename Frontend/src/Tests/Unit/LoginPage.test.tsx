@@ -1,81 +1,160 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import LoginPage from "../../Pages/LoginPage";
+import { userStore } from "../../Store/UserStore";
+import axiosInstance from "../../axiosInstance";
+import { Provider } from "mobx-react";
+
+// Mock axiosInstance
+jest.mock("../../axiosInstance", () => ({
+  post: jest.fn(),
+}));
+
+// Mock useNavigate from react-router-dom
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}));
 
 describe("LoginPage Component", () => {
-  it("renders login form correctly", () => {
-    render(<LoginPage />);
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    // Check if username and password fields exist
-    expect(screen.getByLabelText("Username")).toBeInTheDocument();
-    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+  it("renders login form correctly", () => {
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Check if email and password fields exist
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
 
     // Check if buttons exist
     expect(
-      screen.getByRole("button", { name: /sign in/i })
+      screen.getAllByRole("button", { name: /sign in/i })[0]
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /forgot password/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText(/forgot password/i)).toBeInTheDocument();
   });
 
-  it("allows user to type into input fields", async () => {
-    render(<LoginPage />);
+  it("allows user to type into input fields", () => {
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    const usernameInput = screen.getByLabelText("Username");
-    const passwordInput = screen.getByLabelText("Password");
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
 
     // Type into inputs
-    await userEvent.type(usernameInput, "testuser");
-    await userEvent.type(passwordInput, "mypassword");
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
 
     // Check if values are updated
-    expect(usernameInput).toHaveValue("testuser");
-    expect(passwordInput).toHaveValue("mypassword");
+    expect(emailInput).toHaveValue("test@example.com");
+    expect(passwordInput).toHaveValue("password123");
   });
 
-  it("triggers Sign In function on button click", async () => {
-    render(<LoginPage />);
-
-    const signInButton = screen.getByRole("button", { name: /sign in/i });
-
-    // Mock console.log for verification
-    const consoleSpy = jest.spyOn(console, "log");
-
-    // Click sign in
-    await userEvent.click(signInButton);
-
-    // Ensure function was called
-    expect(consoleSpy).toHaveBeenCalledWith("Sign In");
-
-    consoleSpy.mockRestore();
-  });
-
-  it("triggers Forgot Password function on button click", async () => {
-    render(<LoginPage />);
-
-    const forgotPasswordButton = screen.getByRole("button", {
-      name: /forgot password/i,
+  it("handles sign-in success", async () => {
+    (axiosInstance.post as jest.Mock).mockResolvedValue({
+      data: {
+        user: {
+          id: "1",
+          firstName: "John",
+          lastName: "Doe",
+          email: "test@example.com",
+        },
+      },
     });
 
-    // Mock console.log for verification
-    const consoleSpy = jest.spyOn(console, "log");
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
 
-    // Click forgot password
-    await userEvent.click(forgotPasswordButton);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const signInButton = screen.getAllByRole("button", { name: /sign in/i })[1];
 
-    // Ensure function was called
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.click(signInButton);
+
+    await waitFor(() => {
+      expect(userStore.user.email).toBe("test@example.com");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
+    });
+  });
+
+  it("handles sign-in failure", async () => {
+    (axiosInstance.post as jest.Mock).mockRejectedValue(
+      new Error("Invalid credentials")
+    );
+
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const signInButton = screen.getAllByRole("button", { name: /sign in/i })[0];
+
+    fireEvent.change(emailInput, { target: { value: "wrong@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "wrongpassword" } });
+    fireEvent.click(signInButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Invalid username or password")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("triggers Forgot Password function on button click", () => {
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const forgotPasswordButton = screen.getByText(/forgot password/i);
+    fireEvent.click(forgotPasswordButton);
+
     expect(consoleSpy).toHaveBeenCalledWith("Forgot Password");
 
     consoleSpy.mockRestore();
   });
 
-  it("redirects to create account page when clicking 'Create one'", async () => {
-    render(<LoginPage />);
+  it("redirects to create account page when clicking 'Create one'", () => {
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
 
     const createAccountLink = screen.getByRole("link", { name: /create one/i });
 
-    // Ensure the link exists
     expect(createAccountLink).toBeInTheDocument();
     expect(createAccountLink).toHaveAttribute("href", "/create-account");
   });

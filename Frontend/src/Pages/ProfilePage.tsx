@@ -1,17 +1,24 @@
-import { JSX, useState, useEffect } from "react";
+import { JSX, useState, useEffect, use } from "react";
 import Header from "../Components/Header";
+import axiosInstance from "../axiosInstance";
+import { userStore } from "../Store/UserStore";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage(): JSX.Element {
+  const navigate = useNavigate();
   // State variables
   // Keeping track of the active tab
   const [activeTab, setActiveTab] = useState("tickets");
+
+  useEffect(() => {
+    userStore.user.firstName === "" && navigate("/login");
+  }, []);
   // User data state
   const [userData, setUserData] = useState({
-    email: "",
+    email: userStore.user.email,
     password: "",
-    firstName: "",
-    lastName: "",
-    countryOfResidence: "",
+    firstName: userStore.user.firstName,
+    lastName: userStore.user.lastName,
   });
   // State to keep track of unsaved changes
   const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -34,13 +41,32 @@ export default function ProfilePage(): JSX.Element {
   };
 
   // Save changes to localStorage
-  const handleSaveChanges = () => {
-    localStorage.setItem("userProfile", JSON.stringify(userData));
-    setUnsavedChanges(false);
-    setShowSavedMessage(true);
-    setTimeout(() => setShowSavedMessage(false), 3000); // Hide after 3 seconds
+  const handleSaveChanges = async () => {
+    try {
+      await userStore.updateUserData({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+      });
+      setUnsavedChanges(false);
+      setShowSavedMessage(true);
+      setTimeout(() => setShowSavedMessage(false), 3000); // Hide after 3 seconds
+    } catch (error) {
+      console.error("Error updating user", error);
+    }
   };
 
+  const handleSignOut = async () => {
+    try {
+      const res = axiosInstance.post("/users/logout");
+      // Clear user data from mobx store
+      userStore.clearUserData();
+      // redirect home
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
   return (
     <div className="bg-gray-900 min-h-screen text-white">
       {/* Header */}
@@ -127,7 +153,7 @@ export default function ProfilePage(): JSX.Element {
                   id="email"
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-sm mb-1" htmlFor="country">
                   Country
                 </label>
@@ -139,7 +165,7 @@ export default function ProfilePage(): JSX.Element {
                   className="w-full p-2 rounded bg-gray-700 text-white"
                   id="country"
                 />
-              </div>
+              </div> */}
             </div>
             {unsavedChanges && (
               <button
@@ -158,7 +184,10 @@ export default function ProfilePage(): JSX.Element {
         {activeTab === "signout" && (
           <div>
             <h2 className="text-2xl font-semibold mb-3">Sign Out</h2>
-            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+            <button
+              onClick={handleSignOut}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+            >
               Sign Out
             </button>
           </div>

@@ -8,10 +8,10 @@ import { BrowserRouter } from "react-router-dom";
 jest.mock("../../Store/UserStore", () => ({
   userStore: {
     user: {
+      id: "",
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
     },
     setUserData: jest.fn(),
     clearUserData: jest.fn(),
@@ -25,10 +25,10 @@ describe("Header Component", () => {
   beforeEach(() => {
     // Reset userStore before each test
     userStore.user = {
+      id: "",
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
     };
   });
 
@@ -79,10 +79,10 @@ describe("Header Component", () => {
   it("displays user's full name if user is signed in", () => {
     // Simulate a signed-in user
     userStore.user = {
+      id: "1",
       firstName: "John",
       lastName: "Doe",
       email: "john.doe@example.com",
-      phone: "1234567890",
     };
 
     render(

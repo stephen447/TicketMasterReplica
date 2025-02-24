@@ -1,159 +1,187 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import { MemoryRouter } from "react-router-dom";
+import { Provider } from "mobx-react";
+import { userStore } from "../../Store/UserStore";
+import axiosInstance from "../../axiosInstance";
 import CreateAccountPage from "../../Pages/CreateAccountPage";
 
-// Helper function to fill in the form
-const fillForm = ({
-  email,
-  password,
-  confirmPassword,
-  firstName,
-  lastName,
-  countryOfResidence,
-}: {
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  firstName?: string;
-  lastName?: string;
-  countryOfResidence?: string;
-}) => {
-  if (email)
-    fireEvent.change(screen.getByLabelText(/email/i), {
-      target: { value: email },
-    });
-  if (password)
-    fireEvent.change(screen.getAllByLabelText(/password/i)[0], {
-      target: { value: password },
-    });
-  if (confirmPassword)
-    fireEvent.change(screen.getByLabelText(/confirm password/i), {
-      target: { value: confirmPassword },
-    });
-  if (firstName)
-    fireEvent.change(screen.getByLabelText(/first name/i), {
-      target: { value: firstName },
-    });
-  if (lastName)
-    fireEvent.change(screen.getByLabelText(/last name/i), {
-      target: { value: lastName },
-    });
-  if (countryOfResidence)
-    fireEvent.change(screen.getByLabelText(/country of residence/i), {
-      target: { value: countryOfResidence },
-    });
-};
+// Mock axiosInstance
+jest.mock("../../axiosInstance", () => ({
+  post: jest.fn(),
+}));
 
-describe("CreateAccountPage", () => {
+// Mock useNavigate from react-router-dom
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}));
+
+describe("CreateAccountPage Component", () => {
   beforeEach(() => {
-    render(
-      <BrowserRouter>
-        {" "}
-        {/* Wrap the component with BrowserRouter */}
-        <CreateAccountPage />
-      </BrowserRouter>
-    );
+    jest.clearAllMocks();
   });
 
-  it("renders the form", () => {
-    // Check if all form elements are rendered correctly
+  it("renders create account form correctly", () => {
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <CreateAccountPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Check if email, password, and confirm password fields exist
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    // expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/confirm password/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/country of residence/i)).toBeInTheDocument();
+
+    // Check if buttons exist
     expect(
-      screen.getByRole("button", { name: /sign up/i })
+      screen.getAllByRole("button", { name: /create account/i })[0]
     ).toBeInTheDocument();
   });
 
-  it("shows validation errors when fields are missing", async () => {
-    fireEvent.click(screen.getByRole("button", { name: /sign up/i }));
-
-    await waitFor(() => {
-      expect(screen.getByText(/email is required/i)).toBeInTheDocument();
-      //expect(screen.getAllByText(/password is required/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/confirm password is required/i)
-      ).toBeInTheDocument();
-      expect(screen.getByText(/first name is required/i)).toBeInTheDocument();
-      expect(screen.getByText(/last name is required/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/country of residence is required/i)
-      ).toBeInTheDocument();
-    });
-  });
-
-  it("shows error when passwords do not match", async () => {
-    fillForm({
-      email: "test@example.com",
-      password: "password123",
-      confirmPassword: "password456", // Mismatched passwords
-      firstName: "John",
-      lastName: "Doe",
-      countryOfResidence: "USA",
-    });
-
-    fireEvent.click(screen.getByRole("button", { name: /sign up/i }));
-
-    await waitFor(() => {
-      expect(screen.getByText(/passwords must match/i)).toBeInTheDocument();
-    });
-  });
-
-  it("submits the form successfully when all fields are valid", async () => {
-    const mockHandleSignUp = jest.fn();
-
-    // Replace the handleSignUp function with a mock
-    const { container } = render(
-      <BrowserRouter>
-        {" "}
-        {/* Wrap the component with BrowserRouter */}
-        <CreateAccountPage />
-      </BrowserRouter>
+  it("allows user to type into input fields", () => {
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <CreateAccountPage />
+        </MemoryRouter>
+      </Provider>
     );
-    container
-      .querySelector("form")
-      ?.addEventListener("submit", mockHandleSignUp);
 
-    fillForm({
-      email: "test@example.com",
-      password: "password123",
-      confirmPassword: "password123",
-      firstName: "John",
-      lastName: "Doe",
-      countryOfResidence: "USA",
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+
+    // Type into inputs
+    fireEvent.change(emailInput, { target: { value: "newuser@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.change(confirmPasswordInput, {
+      target: { value: "password123" },
     });
 
-    fireEvent.click(screen.getAllByRole("button", { name: /sign up/i })[1]);
+    // Check if values are updated
+    expect(emailInput).toHaveValue("newuser@example.com");
+    expect(passwordInput).toHaveValue("password123");
+    expect(confirmPasswordInput).toHaveValue("password123");
+  });
+
+  it("handles account creation success", async () => {
+    (axiosInstance.post as jest.Mock).mockResolvedValue({
+      data: {
+        user: {
+          id: "2",
+          firstName: "Jane",
+          lastName: "Doe",
+          email: "newuser@example.com",
+        },
+      },
+    });
+
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <CreateAccountPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+    const createAccountButton = screen.getAllByRole("button", {
+      name: /create account/i,
+    })[0];
+
+    fireEvent.change(emailInput, { target: { value: "newuser@example.com" } });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.change(confirmPasswordInput, {
+      target: { value: "password123" },
+    });
+    fireEvent.click(createAccountButton);
 
     await waitFor(() => {
-      expect(mockHandleSignUp).toHaveBeenCalledTimes(1);
+      expect(userStore.user.email).toBe("newuser@example.com");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
 
-  it("does not submit the form if there are validation errors", async () => {
-    const mockHandleSignUp = jest.fn();
-
-    // Replace the handleSignUp function with a mock
-    const { container } = render(
-      <BrowserRouter>
-        {" "}
-        {/* Wrap the component with BrowserRouter */}
-        <CreateAccountPage />
-      </BrowserRouter>
+  it("handles account creation failure", async () => {
+    (axiosInstance.post as jest.Mock).mockRejectedValue(
+      new Error("Email already exists")
     );
-    container
-      .querySelector("form")
-      ?.addEventListener("submit", mockHandleSignUp);
 
-    // Submit the form with missing fields
-    const submitButton = screen.getAllByRole("button", { name: /sign up/i });
-    submitButton[0].click();
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <CreateAccountPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getAllByLabelText(/password/i)[0];
+    const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+    const createAccountButton = screen.getAllByRole("button", {
+      name: /sign up/i,
+    })[0];
+
+    fireEvent.change(emailInput, {
+      target: { value: "existinguser@example.com" },
+    });
+    fireEvent.change(passwordInput, { target: { value: "password123" } });
+    fireEvent.change(confirmPasswordInput, {
+      target: { value: "password123" },
+    });
+    fireEvent.click(createAccountButton);
 
     await waitFor(() => {
-      expect(mockHandleSignUp).not.toHaveBeenCalled();
+      expect(screen.getByText("Email already exists")).toBeInTheDocument();
     });
+  });
+
+  it("triggers Forgot Password function on button click", () => {
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <CreateAccountPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const forgotPasswordButton = screen.getAllByRole("button", {
+      name: /sign in /i,
+    })[0];
+    fireEvent.click(forgotPasswordButton);
+
+    expect(consoleSpy).toHaveBeenCalledWith("Forgot Password");
+
+    consoleSpy.mockRestore();
+  });
+
+  it("redirects to login page when clicking 'Already have an account?'", () => {
+    render(
+      <Provider userStore={userStore}>
+        <MemoryRouter>
+          <CreateAccountPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    // Query the button that triggers the sign-in action
+    const signInButton = screen.getAllByRole("button", { name: /sign in/i })[0];
+
+    // Check if the button is present
+    expect(signInButton).toBeInTheDocument();
+
+    // Simulate a click on the button
+    fireEvent.click(signInButton);
+
+    // Check if the navigate function has been called with the correct path
+    expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 });

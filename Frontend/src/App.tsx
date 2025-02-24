@@ -78,17 +78,6 @@ export default function App() {
     );
   };
 
-  // Use effect for testing user information
-  useEffect(() => {
-    // Fetch user data and store in the mobx store including their tickets
-    userStore.setUserData({
-      firstName: "John",
-      lastName: "Doe",
-      email: "test@gmail.com",
-      phone: "86064",
-    });
-  }, []);
-
   return (
     <Provider cartStore={cartStore} userStore={userStore}>
       <BrowserRouter>

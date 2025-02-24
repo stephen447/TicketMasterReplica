@@ -1,16 +1,48 @@
-import { JSX } from "react";
+import { JSX, useEffect } from "react";
 import Header from "../Components/Header";
 import { useState } from "react";
+import axiosInstance from "../axiosInstance";
+import { userStore } from "../Store/UserStore";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(): JSX.Element {
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
+
+  // If already signed in, redirect to profile page
+  useEffect(() => {
+    userStore.user.firstName !== "" && navigate("/profile");
+  }, []);
 
   /**
    * Function to handle the sign in process
    */
-  function handleSignIn(): void {
-    console.log("Sign In");
+  async function handleSignIn(): Promise<void> {
+    try {
+      const res = await axiosInstance.post("/users/login", {
+        email: email,
+        password: password,
+      });
+
+      // Update the state in mobx store for the header
+      userStore.setUserData({
+        id: res.data.user.id,
+        firstName: res.data.user.firstName,
+        lastName: res.data.user.lastName,
+        email: res.data.user.email,
+      });
+
+      // Redirect to home page
+      navigate("/");
+      console.log("res", res);
+    } catch (error) {
+      console.error("Error signing in", error);
+      setError("Invalid username or password");
+      setEmail("");
+      setPassword("");
+    }
   }
 
   /**
@@ -31,23 +63,23 @@ export default function LoginPage(): JSX.Element {
           </h1>
           {/* Form */}
           <form className="space-y-4">
-            {/* Username Field */}
+            {/* Email Field */}
             <div>
               <label
-                htmlFor="username"
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-600"
               >
-                Username
+                Email
               </label>
               <input
                 type="text"
-                id="username"
-                name="username"
-                value={username}
+                id="email"
+                name="email"
+                value={email}
                 className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setUsername(e.target.value)
+                  setEmail(e.target.value)
                 }
               />
             </div>
@@ -95,7 +127,7 @@ export default function LoginPage(): JSX.Element {
               </button>
             </div>
           </form>
-
+          <p className="text-red-600 text-center w-[100%]">{error}</p>
           <div className="my-6 border-t border-gray-300"></div>
 
           <p className="text-sm text-gray-600 text-center">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../Components/Header";
 import { JSX } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../axiosInstance";
 
 export default function CreateAccountPage(): JSX.Element {
   const navigate = useNavigate();
@@ -12,7 +13,6 @@ export default function CreateAccountPage(): JSX.Element {
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    countryOfResidence: "",
   });
 
   // State to manage form inputs
@@ -22,7 +22,6 @@ export default function CreateAccountPage(): JSX.Element {
     confirmPassword: "",
     firstName: "",
     lastName: "",
-    countryOfResidence: "",
   });
 
   // Function to handle form submission
@@ -69,13 +68,6 @@ export default function CreateAccountPage(): JSX.Element {
       validationErrors.lastName = "";
     }
 
-    // countryOfResidence
-    if (!formData.countryOfResidence) {
-      validationErrors.countryOfResidence = "Country of Residence is required.";
-    } else {
-      validationErrors.countryOfResidence = "";
-    }
-
     // If there are any errors, don't proceed with form submission
     if (Object.values(validationErrors).some((error) => error !== "")) {
       setErrors(validationErrors);
@@ -89,10 +81,21 @@ export default function CreateAccountPage(): JSX.Element {
       confirmPassword: "",
       firstName: "",
       lastName: "",
-      countryOfResidence: "",
     });
 
     // Proceed with form submission logic (e.g., send data to server)
+    try {
+      axiosInstance.post("/users/register", {
+        email: formData.email,
+        password: formData.password,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        type: "user",
+      });
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing up", error);
+    }
   }
 
   function handleSignIn() {
@@ -229,7 +232,7 @@ export default function CreateAccountPage(): JSX.Element {
               )}
             </div>
             {/* country of residence */}
-            <div>
+            {/* <div>
               <label
                 htmlFor="countryOfResidence"
                 className="block text-sm font-medium text-gray-700"
@@ -250,7 +253,7 @@ export default function CreateAccountPage(): JSX.Element {
                   {errors.countryOfResidence}
                 </p>
               )}
-            </div>
+            </div> */}
             {/* submit button */}
             <button
               type="submit"
@@ -260,7 +263,7 @@ export default function CreateAccountPage(): JSX.Element {
             </button>
           </form>
           {/* Sign In if already have an account*/}
-          <p className="mt-4 text-center text-sm text-gray-600">
+          <p className="mt-4 text-center text-sm text-gray-600" role="link">
             Already have an account?{" "}
             <button
               onClick={handleSignIn}

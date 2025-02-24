@@ -21,7 +21,6 @@ const Header: React.FC<UserProfileProps> = ({ userStore }) => {
   // Functionality for changing sign-in button to user info
   function checkSignedIn() {
     const isSignedIn = userStore?.fullName;
-    console.log(typeof isSignedIn, isSignedIn);
 
     return isSignedIn != " " ? (
       <button
